@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @GetMapping
@@ -33,5 +33,15 @@ public class UserController {
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable String id) {
         return "User " + id + " deleted";
+    }
+
+    @PostMapping("/{id}/token")
+    public String generateUserToken(@PathVariable String id) {
+        return "Token generated for user: " + id;
+    }
+
+    @GetMapping("/{id}/trips")
+    public String getUserTrips(@PathVariable String id) {
+        return "Trips for user " + id + ": Trip1, Trip2, Trip3";
     }
 }
