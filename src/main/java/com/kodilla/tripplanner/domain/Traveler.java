@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Builder
 @NoArgsConstructor
@@ -33,7 +35,10 @@ public class Traveler {
     @Column(name = "age", nullable = false)
     private int age;
 
-//    @OneToMany
-//    @JoinColumn(name = "traveler_id")
-//    private List<Baggage> baggageList;
+    @OneToMany(mappedBy = "traveler", cascade = CascadeType.ALL)
+    private List<Baggage> baggageList;
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
 }
