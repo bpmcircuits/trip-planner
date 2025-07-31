@@ -34,4 +34,14 @@ public class UserController {
     public String deleteUser(@PathVariable String id) {
         return "User " + id + " deleted";
     }
+
+    @PostMapping("/{id}/token")
+    public String generateUserToken(@PathVariable String id) {
+        return "Token generated for user: " + id;
+    }
+
+    @GetMapping("/{id}/trips")
+    public String getUserTrips(@PathVariable String id) {
+        return "Trips for user " + id + ": Trip1, Trip2, Trip3";
+    }
 }
