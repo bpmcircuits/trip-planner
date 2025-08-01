@@ -23,8 +23,8 @@ class HotelRepositoryTest {
                 .name("Hilton")
                 .country("Polska")
                 .city("Warszawa")
-                .fromDate(LocalDate.now())
-                .toDate(LocalDate.now().plusDays(2))
+                .checkInDate(LocalDate.now())
+                .checkOutDate(LocalDate.now().plusDays(2))
                 .price(BigDecimal.valueOf(500))
                 .build();
         Hotel saved = null;
@@ -44,8 +44,8 @@ class HotelRepositoryTest {
                 .name("Marriott")
                 .country("Niemcy")
                 .city("Berlin")
-                .fromDate(LocalDate.now())
-                .toDate(LocalDate.now().plusDays(3))
+                .checkInDate(LocalDate.now())
+                .checkOutDate(LocalDate.now().plusDays(3))
                 .price(BigDecimal.valueOf(600))
                 .build();
         Hotel saved = null;
@@ -65,8 +65,8 @@ class HotelRepositoryTest {
                 .name("Sheraton")
                 .country("Francja")
                 .city("Paryż")
-                .fromDate(LocalDate.now())
-                .toDate(LocalDate.now().plusDays(1))
+                .checkInDate(LocalDate.now())
+                .checkOutDate(LocalDate.now().plusDays(1))
                 .price(BigDecimal.valueOf(700))
                 .build();
         Hotel saved = null;
@@ -87,8 +87,8 @@ class HotelRepositoryTest {
                 .name("Novotel")
                 .country("Włochy")
                 .city("Rzym")
-                .fromDate(from)
-                .toDate(from.plusDays(5))
+                .checkInDate(from)
+                .checkOutDate(from.plusDays(5))
                 .price(BigDecimal.valueOf(800))
                 .build();
         Hotel saved = null;
@@ -96,7 +96,7 @@ class HotelRepositoryTest {
             saved = hotelRepository.save(hotel);
             Optional<Hotel> found = hotelRepository.findById(saved.getId());
             assertThat(found).isPresent();
-            assertThat(found.get().getFromDate()).isEqualTo(from);
+            assertThat(found.get().getCheckInDate()).isEqualTo(from);
         } finally {
             if (saved != null && saved.getId() != null) hotelRepository.deleteById(saved.getId());
         }
@@ -109,8 +109,8 @@ class HotelRepositoryTest {
                 .name("Ibis")
                 .country("Hiszpania")
                 .city("Madryt")
-                .fromDate(to.minusDays(2))
-                .toDate(to)
+                .checkInDate(to.minusDays(2))
+                .checkOutDate(to)
                 .price(BigDecimal.valueOf(400))
                 .build();
         Hotel saved = null;
@@ -118,7 +118,7 @@ class HotelRepositoryTest {
             saved = hotelRepository.save(hotel);
             Optional<Hotel> found = hotelRepository.findById(saved.getId());
             assertThat(found).isPresent();
-            assertThat(found.get().getToDate()).isEqualTo(to);
+            assertThat(found.get().getCheckOutDate()).isEqualTo(to);
         } finally {
             if (saved != null && saved.getId() != null) hotelRepository.deleteById(saved.getId());
         }
@@ -131,8 +131,8 @@ class HotelRepositoryTest {
                 .name("Radisson")
                 .country("Szwecja")
                 .city("Sztokholm")
-                .fromDate(LocalDate.now())
-                .toDate(LocalDate.now().plusDays(4))
+                .checkInDate(LocalDate.now())
+                .checkOutDate(LocalDate.now().plusDays(4))
                 .price(price)
                 .build();
         Hotel saved = null;

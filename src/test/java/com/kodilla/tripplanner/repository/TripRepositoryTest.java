@@ -49,8 +49,8 @@ class TripRepositoryTest {
                 .name("Hilton")
                 .country("Poland")
                 .city("Łódź")
-                .fromDate(LocalDateTime.now().toLocalDate())
-                .toDate(LocalDateTime.now().plusDays(2).toLocalDate())
+                .checkInDate(LocalDateTime.now().toLocalDate())
+                .checkOutDate(LocalDateTime.now().plusDays(2).toLocalDate())
                 .price(BigDecimal.valueOf(500))
                 .build();
         return hotelRepository.save(hotel);
