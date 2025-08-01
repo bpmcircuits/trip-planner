@@ -1,13 +1,13 @@
 package com.kodilla.tripplanner.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public record HotelDTO(Long id,
                        String name,
-                       String address,
                        String country,
                        String city,
-                       String checkInDate,
-                       String checkOutDate,
+                       LocalDate checkInDate,
+                       LocalDate checkOutDate,
                        BigDecimal price) {
 }
