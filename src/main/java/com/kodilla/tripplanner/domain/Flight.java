@@ -50,6 +50,5 @@ public class Flight {
     private String currency;
 
 //    @OneToMany
-//    @JoinColumn(name = "baggage_id")
 //    private List<Baggage> baggageList;
 }

@@ -28,12 +28,12 @@ public class Hotel {
     private String city;
 
     @Setter
-    @Column(name = "fromDate", nullable = false)
-    private LocalDate fromDate;
+    @Column(name = "check_in", nullable = false)
+    private LocalDate checkInDate;
 
     @Setter
-    @Column(name = "toDate", nullable = false)
-    private LocalDate toDate;
+    @Column(name = "check_out", nullable = false)
+    private LocalDate checkOutDate;
 
     @Setter
     @Column(name = "price", nullable = false)
