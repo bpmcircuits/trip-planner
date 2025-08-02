@@ -1,6 +1,12 @@
 package com.kodilla.tripplanner.controller;
 
+import com.kodilla.tripplanner.domain.User;
+import com.kodilla.tripplanner.dto.UserDTO;
+import com.kodilla.tripplanner.dto.UserFormDTO;
+import com.kodilla.tripplanner.mapper.UserMapper;
+import com.kodilla.tripplanner.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,34 +16,47 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
+    private final UserService userService;
+    private final UserMapper userMapper;
+
     @GetMapping
-    public List<String> getAllUsers() {
-        return List.of("User1", "User2", "User3");
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserDTO> userDTOs = userMapper.toUserDTOList(users);
+        return ResponseEntity.ok(userDTOs);
     }
 
     @GetMapping("/{id}")
-    public String getUserById(@PathVariable String id) {
-        return "User" + id;
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        UserDTO userDTO = userMapper.toUserDTO(user);
+        return ResponseEntity.ok(userDTO);
     }
 
     @PostMapping
-    public String createUser(@RequestBody String user) {
-        return "User created: " + user;
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserFormDTO userForm) {
+        User user = userMapper.toNewUser(userForm);
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.ok(userMapper.toUserDTO(createdUser));
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable String id, @RequestBody String user) {
-        return "User " + id + " updated with data: " + user;
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDto) {
+        User user = userMapper.toUser(userDto);
+        User updatedUser = userService.updateUser(id, user);
+        return ResponseEntity.ok(userMapper.toUserDTO(updatedUser));
     }
 
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable String id) {
-        return "User " + id + " deleted";
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/token")
-    public String generateUserToken(@PathVariable String id) {
-        return "Token generated for user: " + id;
+    public ResponseEntity<UserDTO> generateUserToken(@PathVariable Long id) {
+        User user = userService.generateUserToken(id);
+        return ResponseEntity.ok(userMapper.toUserDTO(user));
     }
 
     @GetMapping("/{id}/trips")

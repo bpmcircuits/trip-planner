@@ -1,5 +1,6 @@
 package com.kodilla.tripplanner.mapper;
 
+import com.kodilla.tripplanner.domain.AccountType;
 import com.kodilla.tripplanner.domain.User;
 import com.kodilla.tripplanner.dto.UserDTO;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ class UserMapperTest {
     void shouldMapToUserDTO() {
         User user = User.builder()
                 .id(1L)
-                .accountType("ADMIN")
+                .accountType(AccountType.ADMIN)
                 .firstName("Jan")
                 .lastName("Kowalski")
                 .email("jan@kowalski.pl")
@@ -29,7 +30,7 @@ class UserMapperTest {
 
         assertThat(dto).isNotNull();
         assertThat(dto.id()).isEqualTo(1L);
-        assertThat(dto.accountType()).isEqualTo("ADMIN");
+        assertThat(dto.accountType()).isEqualTo(AccountType.ADMIN);
         assertThat(dto.firstName()).isEqualTo("Jan");
         assertThat(dto.lastName()).isEqualTo("Kowalski");
         assertThat(dto.email()).isEqualTo("jan@kowalski.pl");
@@ -39,14 +40,15 @@ class UserMapperTest {
     @Test
     void shouldMapToUser() {
         LocalDateTime now = LocalDateTime.now();
-        UserDTO dto = new UserDTO(2L, "USER", "Anna",
+        UserDTO dto = new UserDTO(2L, AccountType.USER, "anno", "Anna",
                 "Nowak", "anna@nowak.pl", "def", now, now.plusDays(2));
 
         User user = mapper.toUser(dto);
 
         assertThat(user).isNotNull();
         assertThat(user.getId()).isEqualTo(2L);
-        assertThat(user.getAccountType()).isEqualTo("USER");
+        assertThat(user.getAccountType()).isEqualTo(AccountType.USER);
+        assertThat(user.getLogin()).isEqualTo("anno");
         assertThat(user.getFirstName()).isEqualTo("Anna");
         assertThat(user.getLastName()).isEqualTo("Nowak");
         assertThat(user.getEmail()).isEqualTo("anna@nowak.pl");

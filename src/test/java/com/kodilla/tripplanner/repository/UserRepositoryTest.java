@@ -1,6 +1,6 @@
-// src/test/java/com/kodilla/tripplanner/repository/UserRepositoryTest.java
 package com.kodilla.tripplanner.repository;
 
+import com.kodilla.tripplanner.domain.AccountType;
 import com.kodilla.tripplanner.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +17,28 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    private User.UserBuilder baseUserBuilder() {
+        LocalDateTime now = LocalDateTime.now();
+        return User.builder()
+                .accountType(AccountType.USER)
+                .login("testLogin")
+                .passwordHash("testHash")
+                .email("test@domain.com")
+                .token("testToken")
+                .createdAt(now)
+                .tokenCreatedAt(now)
+                .tokenExpiresAt(now.plusHours(1));
+    }
+
     @Test
     void shouldSaveAndFindAccountType() {
-        User user = User.builder().accountType("admin").build();
+        User user = baseUserBuilder().accountType(AccountType.ADMIN).build();
         User saved = null;
         try {
             saved = userRepository.save(user);
             Optional<User> found = userRepository.findById(saved.getId());
             assertThat(found).isPresent();
-            assertThat(found.get().getAccountType()).isEqualTo("admin");
+            assertThat(found.get().getAccountType()).isEqualTo(AccountType.ADMIN);
         } finally {
             if (saved != null && saved.getId() != null) userRepository.deleteById(saved.getId());
         }
@@ -33,7 +46,7 @@ class UserRepositoryTest {
 
     @Test
     void shouldSaveAndFindFirstName() {
-        User user = User.builder().firstName("Jan").build();
+        User user = baseUserBuilder().firstName("Jan").build();
         User saved = null;
         try {
             saved = userRepository.save(user);
@@ -47,7 +60,7 @@ class UserRepositoryTest {
 
     @Test
     void shouldSaveAndFindLastName() {
-        User user = User.builder().lastName("Kowalski").build();
+        User user = baseUserBuilder().lastName("Kowalski").build();
         User saved = null;
         try {
             saved = userRepository.save(user);
@@ -61,7 +74,7 @@ class UserRepositoryTest {
 
     @Test
     void shouldSaveAndFindPasswordHash() {
-        User user = User.builder().passwordHash("hash123").build();
+        User user = baseUserBuilder().passwordHash("hash123").build();
         User saved = null;
         try {
             saved = userRepository.save(user);
@@ -75,7 +88,7 @@ class UserRepositoryTest {
 
     @Test
     void shouldSaveAndFindEmail() {
-        User user = User.builder().email("test@domain.com").build();
+        User user = baseUserBuilder().email("test@domain.com").build();
         User saved = null;
         try {
             saved = userRepository.save(user);
@@ -89,7 +102,7 @@ class UserRepositoryTest {
 
     @Test
     void shouldSaveAndFindToken() {
-        User user = User.builder().token("tokenABC").build();
+        User user = baseUserBuilder().token("tokenABC").build();
         User saved = null;
         try {
             saved = userRepository.save(user);
@@ -104,7 +117,7 @@ class UserRepositoryTest {
     @Test
     void shouldSaveAndFindTokenCreatedAt() {
         LocalDateTime now = LocalDateTime.now();
-        User user = User.builder().tokenCreatedAt(now).build();
+        User user = baseUserBuilder().tokenCreatedAt(now).build();
         User saved = null;
         try {
             saved = userRepository.save(user);
@@ -119,7 +132,7 @@ class UserRepositoryTest {
     @Test
     void shouldSaveAndFindTokenExpiresAt() {
         LocalDateTime expires = LocalDateTime.now().plusHours(2);
-        User user = User.builder().tokenExpiresAt(expires).build();
+        User user = baseUserBuilder().tokenExpiresAt(expires).build();
         User saved = null;
         try {
             saved = userRepository.save(user);

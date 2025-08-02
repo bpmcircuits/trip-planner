@@ -18,8 +18,12 @@ public class User {
     private Long id;
 
     @Setter
-    @Column(name = "account_type")
-    private String accountType;
+    @Column(name = "account_type", nullable = false)
+    private AccountType accountType;
+
+    @Setter
+    @Column(name = "login", unique = true, nullable = false)
+    private String login;
 
     @Setter
     @Column(name = "first_name")
@@ -30,25 +34,25 @@ public class User {
     private String lastName;
 
     @Setter
-    @Column(name = "password_hash")
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     @Setter
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Setter
-    @Column(name = "token")
+    @Column(name = "token", nullable = false)
     private String token;
 
     @Setter
-    @Column(name = "token_created_at")
+    @Column(name = "token_created_at", nullable = false)
     private LocalDateTime tokenCreatedAt;
 
     @Setter
-    @Column(name = "token_expires_at")
+    @Column(name = "token_expires_at", nullable = false)
     private LocalDateTime tokenExpiresAt;
 }
