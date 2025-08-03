@@ -1,21 +1,32 @@
 package com.kodilla.tripplanner.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.kodilla.tripplanner.dto.CurrencyConversionDTO;
+import com.kodilla.tripplanner.dto.NBPTableDTO;
+import com.kodilla.tripplanner.service.CurrencyService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/currency")
 public class CurrencyController {
 
+    private final CurrencyService currencyService;
+
     @GetMapping
-    public String getAvailableCurrencies() {
-        return "USD, EUR, GBP, PLN";
+    public ResponseEntity<List<NBPTableDTO>> getAvailableCurrencies() {
+        return ResponseEntity.ok(currencyService.getAvailableCurrencies());
     }
 
-    @GetMapping("/convert")
-    public String getExchangeRate(@RequestBody String fromCurrency, String toCurrency, String amount) {
-        return "Exchange rate from " + fromCurrency + " to " + toCurrency + " is 1.0 (placeholder value)";
+    @GetMapping("/exchange")
+    public ResponseEntity<CurrencyConversionDTO> getExchangeRate(
+            @RequestParam String from,
+            @RequestParam String to,
+            @RequestParam BigDecimal amount) {
+        return ResponseEntity.ok(currencyService.getExchangedAmount(from, to, amount));
     }
 }
