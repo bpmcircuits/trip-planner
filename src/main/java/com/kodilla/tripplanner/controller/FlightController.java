@@ -1,14 +1,30 @@
 package com.kodilla.tripplanner.controller;
 
+import com.kodilla.tripplanner.dto.FlightRequestDTO;
+import com.kodilla.tripplanner.rapidapi.kiwiflights.dto.KiwiSearchResponseOneWayDTO;
+import com.kodilla.tripplanner.rapidapi.kiwiflights.dto.KiwiSearchResponseRoundTripDTO;
+import com.kodilla.tripplanner.service.FlightService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/flights")
 public class FlightController {
 
-    @GetMapping
-    public String getAllFlightsForSearchedDate(@RequestBody String date) {
-        return "List of flights for the searched date: " + date;
+    private final FlightService flightService;
+
+    @GetMapping("/one-way")
+    public ResponseEntity<KiwiSearchResponseOneWayDTO> getAllFlightsOneWay(
+            @RequestBody FlightRequestDTO requestBody) {
+        return ResponseEntity.ok(flightService.getOneWayFlights(requestBody));
+    }
+
+    @GetMapping("/round-trip")
+    public ResponseEntity<KiwiSearchResponseRoundTripDTO> getAllFlightsRoundTrip(
+            @RequestBody FlightRequestDTO requestBody) {
+        return ResponseEntity.ok(flightService.getRoundTripFlights(requestBody));
     }
 
     @GetMapping("/{id}")
