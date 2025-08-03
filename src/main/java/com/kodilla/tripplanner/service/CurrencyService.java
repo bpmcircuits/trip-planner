@@ -51,6 +51,7 @@ public class CurrencyService {
     }
 
     private BigDecimal getRate(String currencyCode) {
+        if (currencyCode.equalsIgnoreCase("PLN")) return BigDecimal.ONE;
         return currencyRepository.findByCurrencyCode(currencyCode).stream()
                 .max(Comparator.comparing(Currency::getLastUpdated))
                 .map(Currency::getValue)
