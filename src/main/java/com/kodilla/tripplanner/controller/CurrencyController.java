@@ -1,7 +1,7 @@
 package com.kodilla.tripplanner.controller;
 
 import com.kodilla.tripplanner.dto.CurrencyConversionDTO;
-import com.kodilla.tripplanner.dto.NBPTableDTO;
+import com.kodilla.tripplanner.nbp.dto.NBPTableDTO;
 import com.kodilla.tripplanner.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

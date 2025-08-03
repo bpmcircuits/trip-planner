@@ -1,6 +1,6 @@
 package com.kodilla.tripplanner.nbp.client;
 
-import com.kodilla.tripplanner.dto.NBPTableDTO;
+import com.kodilla.tripplanner.nbp.dto.NBPTableDTO;
 import com.kodilla.tripplanner.nbp.config.NBPConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

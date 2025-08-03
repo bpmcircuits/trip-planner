@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.dto;
+package com.kodilla.tripplanner.nbp.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

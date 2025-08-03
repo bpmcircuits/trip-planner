@@ -2,7 +2,7 @@ package com.kodilla.tripplanner.service;
 
 import com.kodilla.tripplanner.domain.Currency;
 import com.kodilla.tripplanner.dto.CurrencyConversionDTO;
-import com.kodilla.tripplanner.dto.NBPTableDTO;
+import com.kodilla.tripplanner.nbp.dto.NBPTableDTO;
 import com.kodilla.tripplanner.mapper.CurrencyMapper;
 import com.kodilla.tripplanner.nbp.client.NBPClient;
 import com.kodilla.tripplanner.repository.CurrencyRepository;
