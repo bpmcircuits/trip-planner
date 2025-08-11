@@ -1,7 +1,7 @@
 package com.kodilla.tripplanner.mapper;
 
 import com.kodilla.tripplanner.domain.Hotel;
-import com.kodilla.tripplanner.dto.HotelDTO;
+import com.kodilla.tripplanner.dto.hotels.HotelDTO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,13 +12,16 @@ public class HotelMapper {
             return null;
         }
         return new HotelDTO(
-                hotel.getId(),
                 hotel.getName(),
-                hotel.getCountry(),
+                hotel.getCountry(), // Using country as countryCode
                 hotel.getCity(),
+                hotel.getPrice(),
+                "USD", // Default currency
                 hotel.getCheckInDate(),
                 hotel.getCheckOutDate(),
-                hotel.getPrice()
+                4.5, // Default review score
+                "Very Good", // Default review score word
+                100 // Default review count
         );
     }
 
@@ -27,9 +30,9 @@ public class HotelMapper {
             return null;
         }
         return Hotel.builder()
-                .id(hotelDTO.id())
+                .id(null) // ID will be generated
                 .name(hotelDTO.name())
-                .country(hotelDTO.country())
+                .country(hotelDTO.countryCode()) // Using countryCode as country
                 .city(hotelDTO.city())
                 .checkInDate(hotelDTO.checkInDate())
                 .checkOutDate(hotelDTO.checkOutDate())

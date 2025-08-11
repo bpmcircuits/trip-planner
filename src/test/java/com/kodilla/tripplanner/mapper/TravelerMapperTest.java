@@ -1,68 +1,180 @@
 package com.kodilla.tripplanner.mapper;
 
-import com.kodilla.tripplanner.domain.*;
+import com.kodilla.tripplanner.domain.BaggageType;
+import com.kodilla.tripplanner.domain.Gender;
+import com.kodilla.tripplanner.domain.PersonType;
+import com.kodilla.tripplanner.domain.Traveler;
+import com.kodilla.tripplanner.domain.Trip;
 import com.kodilla.tripplanner.dto.TravelerDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TravelerMapperTest {
 
-    private final TravelerMapper mapper = new TravelerMapper();
+    private TravelerMapper travelerMapper;
+
+    @BeforeEach
+    void setUp() {
+        travelerMapper = new TravelerMapper();
+    }
 
     @Test
-    void shouldMapToTravelerDTO() {
+    void testToTravelerDTO() {
+        // Given
         Trip trip = Trip.builder().id(1L).build();
-        Baggage baggage = Baggage.builder().id(2L).build();
         Traveler traveler = Traveler.builder()
-                .id(3L)
-                .firstName("Jan")
-                .lastName("Kowalski")
+                .id(1L)
+                .firstName("John")
+                .lastName("Doe")
                 .gender(Gender.MALE)
                 .personType(PersonType.ADULT)
                 .age(30)
-                .baggageList(List.of(baggage))
+                .baggage(BaggageType.CHECKED)
                 .trip(trip)
                 .build();
 
-        TravelerDTO dto = mapper.toTravelerDTO(traveler);
+        // When
+        TravelerDTO travelerDTO = travelerMapper.toTravelerDTO(traveler);
 
-        assertThat(dto).isNotNull();
-        assertThat(dto.id()).isEqualTo(3L);
-        assertThat(dto.firstName()).isEqualTo("Jan");
-        assertThat(dto.lastName()).isEqualTo("Kowalski");
-        assertThat(dto.gender()).isEqualTo(Gender.MALE);
-        assertThat(dto.personType()).isEqualTo(PersonType.ADULT);
-        assertThat(dto.age()).isEqualTo(30);
-        assertThat(dto.baggageIds()).containsExactly(2L);
-        assertThat(dto.tripId()).isEqualTo(1L);
+        // Then
+        assertNotNull(travelerDTO);
+        assertEquals(traveler.getId(), travelerDTO.id());
+        assertEquals(traveler.getFirstName(), travelerDTO.firstName());
+        assertEquals(traveler.getLastName(), travelerDTO.lastName());
+        assertEquals(traveler.getGender(), travelerDTO.gender());
+        assertEquals(traveler.getPersonType(), travelerDTO.personType());
+        assertEquals(traveler.getAge(), travelerDTO.age());
+        assertEquals(traveler.getBaggage(), travelerDTO.baggage());
+        assertEquals(traveler.getTrip().getId(), travelerDTO.tripId());
     }
 
     @Test
-    void shouldMapToTraveler() {
-        TravelerDTO dto = new TravelerDTO(4L, "Anna", "Nowak",
-                Gender.FEMALE, PersonType.CHILD, 12, List.of(5L), 6L);
-        List<Baggage> baggageList = List.of(Baggage.builder().id(5L).build());
-        Trip trip = Trip.builder().id(6L).build();
+    void testToTravelerDTOWithNullTrip() {
+        // Given
+        Traveler traveler = Traveler.builder()
+                .id(1L)
+                .firstName("John")
+                .lastName("Doe")
+                .gender(Gender.MALE)
+                .personType(PersonType.ADULT)
+                .age(30)
+                .baggage(BaggageType.CHECKED)
+                .trip(null)
+                .build();
 
-        Traveler traveler = mapper.toTraveler(dto, baggageList, trip);
+        // When
+        TravelerDTO travelerDTO = travelerMapper.toTravelerDTO(traveler);
 
-        assertThat(traveler).isNotNull();
-        assertThat(traveler.getId()).isEqualTo(4L);
-        assertThat(traveler.getFirstName()).isEqualTo("Anna");
-        assertThat(traveler.getLastName()).isEqualTo("Nowak");
-        assertThat(traveler.getGender()).isEqualTo(Gender.FEMALE);
-        assertThat(traveler.getPersonType()).isEqualTo(PersonType.CHILD);
-        assertThat(traveler.getAge()).isEqualTo(12);
-        assertThat(traveler.getBaggageList()).isEqualTo(baggageList);
-        assertThat(traveler.getTrip()).isEqualTo(trip);
+        // Then
+        assertNotNull(travelerDTO);
+        assertEquals(traveler.getId(), travelerDTO.id());
+        assertEquals(traveler.getFirstName(), travelerDTO.firstName());
+        assertEquals(traveler.getLastName(), travelerDTO.lastName());
+        assertEquals(traveler.getGender(), travelerDTO.gender());
+        assertEquals(traveler.getPersonType(), travelerDTO.personType());
+        assertEquals(traveler.getAge(), travelerDTO.age());
+        assertEquals(traveler.getBaggage(), travelerDTO.baggage());
+        assertNull(travelerDTO.tripId());
     }
 
     @Test
-    void shouldReturnNullForNullInput() {
-        assertThat(mapper.toTravelerDTO(null)).isNull();
-        assertThat(mapper.toTraveler(null, null, null)).isNull();
+    void testToTravelerDTOWithNullInput() {
+        // When
+        TravelerDTO travelerDTO = travelerMapper.toTravelerDTO(null);
+
+        // Then
+        assertNull(travelerDTO);
+    }
+
+    @Test
+    void testToTravelerDTOList() {
+        // Given
+        Trip trip = Trip.builder().id(1L).build();
+        Traveler traveler1 = Traveler.builder()
+                .id(1L)
+                .firstName("John")
+                .lastName("Doe")
+                .gender(Gender.MALE)
+                .personType(PersonType.ADULT)
+                .age(30)
+                .baggage(BaggageType.CHECKED)
+                .trip(trip)
+                .build();
+
+        Traveler traveler2 = Traveler.builder()
+                .id(2L)
+                .firstName("Jane")
+                .lastName("Smith")
+                .gender(Gender.FEMALE)
+                .personType(PersonType.ADULT)
+                .age(25)
+                .baggage(BaggageType.CABIN)
+                .trip(trip)
+                .build();
+
+        List<Traveler> travelers = Arrays.asList(traveler1, traveler2);
+
+        // When
+        List<TravelerDTO> travelerDTOs = travelerMapper.toTravelerDTOList(travelers);
+
+        // Then
+        assertNotNull(travelerDTOs);
+        assertEquals(2, travelerDTOs.size());
+        assertEquals(traveler1.getId(), travelerDTOs.get(0).id());
+        assertEquals(traveler1.getFirstName(), travelerDTOs.get(0).firstName());
+        assertEquals(traveler2.getId(), travelerDTOs.get(1).id());
+        assertEquals(traveler2.getFirstName(), travelerDTOs.get(1).firstName());
+    }
+
+    @Test
+    void testToTravelerDTOListWithNullInput() {
+        // When
+        List<TravelerDTO> travelerDTOs = travelerMapper.toTravelerDTOList(null);
+
+        // Then
+        assertNull(travelerDTOs);
+    }
+
+    @Test
+    void testToTraveler() {
+        // Given
+        TravelerDTO travelerDTO = new TravelerDTO(
+                1L,
+                "John",
+                "Doe",
+                Gender.MALE,
+                PersonType.ADULT,
+                30,
+                BaggageType.CHECKED,
+                1L
+        );
+
+        // When
+        Traveler traveler = travelerMapper.toTraveler(travelerDTO);
+
+        // Then
+        assertNotNull(traveler);
+        assertNull(traveler.getId()); // ID is not set when converting from DTO to entity
+        assertEquals(travelerDTO.firstName(), traveler.getFirstName());
+        assertEquals(travelerDTO.lastName(), traveler.getLastName());
+        assertEquals(travelerDTO.gender(), traveler.getGender());
+        assertEquals(travelerDTO.personType(), traveler.getPersonType());
+        assertEquals(travelerDTO.age(), traveler.getAge());
+        assertEquals(travelerDTO.baggage(), traveler.getBaggage());
+        assertNull(traveler.getTrip()); // Trip is not set when converting from DTO to entity
+    }
+
+    @Test
+    void testToTravelerWithNullInput() {
+        // When
+        Traveler traveler = travelerMapper.toTraveler(null);
+
+        // Then
+        assertNull(traveler);
     }
 }

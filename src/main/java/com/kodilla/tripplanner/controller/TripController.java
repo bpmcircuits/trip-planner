@@ -1,10 +1,22 @@
 package com.kodilla.tripplanner.controller;
 
+import com.kodilla.tripplanner.domain.Traveler;
+import com.kodilla.tripplanner.dto.TravelerDTO;
+import com.kodilla.tripplanner.mapper.TravelerMapper;
+import com.kodilla.tripplanner.service.TripService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/trips")
+@RequiredArgsConstructor
 public class TripController {
+
+    private final TripService tripService;
+    private final TravelerMapper travelerMapper;
 
     @GetMapping
     public String getAllTrips() {
@@ -31,14 +43,23 @@ public class TripController {
         return "Trip " + id + " hotel updated with details: " + hotelDetails;
     }
 
-    @PostMapping("/{id}/travelers")
-    public String addTravelerToTrip(@PathVariable String id, @RequestBody String travelerDetails) {
-        return "Traveler added to trip " + id + " with details: " + travelerDetails;
+    @GetMapping("/travelers")
+    public ResponseEntity<List<TravelerDTO>> getAllTravelers() {
+        List<Traveler> travelers = tripService.getAllTravelers();
+        return ResponseEntity.ok(travelerMapper.toTravelerDTOList(travelers));
     }
 
-    @DeleteMapping("/{id}/travelers/{travelerId}")
-    public String removeTravelerFromTrip(@PathVariable String id, @PathVariable String travelerId) {
-        return "Traveler " + travelerId + " removed from trip " + id;
+    @PostMapping("/travelers/add")
+    public ResponseEntity<TravelerDTO> addTraveler(@RequestBody TravelerDTO travelerDTO) {
+        Traveler traveler = travelerMapper.toTraveler(travelerDTO);
+        Traveler addedTraveler = tripService.addTraveler(traveler);
+        return ResponseEntity.ok(travelerMapper.toTravelerDTO(addedTraveler));
+    }
+
+    @DeleteMapping("/travelers/{travelerId}")
+    public ResponseEntity<Void> removeTraveler(@PathVariable Long travelerId) {
+        tripService.removeTraveler(travelerId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/book")

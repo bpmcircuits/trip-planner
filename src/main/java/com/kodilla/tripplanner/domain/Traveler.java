@@ -35,8 +35,8 @@ public class Traveler {
     @Column(name = "age", nullable = false)
     private int age;
 
-    @OneToMany(mappedBy = "traveler", cascade = CascadeType.ALL)
-    private List<Baggage> baggageList;
+    @Column(name = "baggage")
+    private BaggageType baggage;
 
     @ManyToOne
     @JoinColumn(name = "trip_id")

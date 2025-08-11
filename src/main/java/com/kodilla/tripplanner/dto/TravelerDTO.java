@@ -1,9 +1,8 @@
 package com.kodilla.tripplanner.dto;
 
+import com.kodilla.tripplanner.domain.BaggageType;
 import com.kodilla.tripplanner.domain.Gender;
 import com.kodilla.tripplanner.domain.PersonType;
-
-import java.util.List;
 
 public record TravelerDTO(Long id,
                           String firstName,
@@ -11,6 +10,6 @@ public record TravelerDTO(Long id,
                           Gender gender,
                           PersonType personType,
                           int age,
-                          List<Long> baggageIds,
+                          BaggageType baggage,
                           Long tripId) {
 }
