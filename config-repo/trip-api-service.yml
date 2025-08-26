@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: trip-api-service
+
+  config:
+    import: configserver:http://config-service:8081
+
+server:
+  port: 8086
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
