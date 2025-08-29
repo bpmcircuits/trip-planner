@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.nbp.config;
+package com.kodilla.nbpapiservice.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

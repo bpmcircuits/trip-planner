@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.domain;
+package com.kodilla.tripapiservice.domain;
 
 public enum PersonType {
     ADULT,

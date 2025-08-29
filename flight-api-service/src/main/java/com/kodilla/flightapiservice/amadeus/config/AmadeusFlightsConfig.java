@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.amadeus.config;
+package com.kodilla.flightapiservice.amadeus.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.dto;
+package com.kodilla.tripapiservice.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

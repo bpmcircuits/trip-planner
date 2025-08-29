@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.dto;
+package com.kodilla.nbpapiservice.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

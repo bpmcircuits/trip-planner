@@ -1,8 +1,8 @@
-package com.kodilla.tripplanner.amadeus.client;
+package com.kodilla.flightapiservice.amadeus.client;
 
-import com.kodilla.tripplanner.amadeus.config.AmadeusFlightsConfig;
-import com.kodilla.tripplanner.amadeus.dto.AmadeusFlightsAirportSearchRequestDTO;
-import com.kodilla.tripplanner.amadeus.dto.AmadeusFlightsAirportSearchResponseDTO;
+import com.kodilla.flightapiservice.amadeus.config.AmadeusFlightsConfig;
+import com.kodilla.flightapiservice.amadeus.dto.AmadeusFlightsAirportSearchRequestDTO;
+import com.kodilla.flightapiservice.amadeus.dto.AmadeusFlightsAirportSearchResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;

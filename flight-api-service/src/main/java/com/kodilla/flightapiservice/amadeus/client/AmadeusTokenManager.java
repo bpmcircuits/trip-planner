@@ -1,7 +1,8 @@
-package com.kodilla.tripplanner.amadeus.client;
+package com.kodilla.flightapiservice.amadeus.client;
 
-import com.kodilla.tripplanner.amadeus.dto.AmadeusTokenResponse;
-import com.kodilla.tripplanner.amadeus.properties.AmadeusProperties;
+
+import com.kodilla.flightapiservice.amadeus.dto.AmadeusTokenResponse;
+import com.kodilla.flightapiservice.amadeus.properties.AmadeusProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

@@ -1,0 +1,40 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: 'true'
+    defer-datasource-initialization: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+  config:
+    import: ''
+  cloud:
+    config:
+      import-check:
+        enabled: 'false'
+      enabled: 'false'
+  datasource:
+    password: sa
+    driver-class-name: org.h2.Driver
+    username: sa
+    url: jdbc:h2:mem:hotel;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+  sql:
+    init:
+      mode: always
+  task:
+    scheduling:
+      enabled: 'false'
+hotel:
+  cleanup:
+    cron: 0 0 0 * * ?
+    days: '30'
+    enabled: 'false'
+booking:
+  api:
+    key: test-api-key
+  hotels:
+    api:
+      endpoint:
+        prod: https://booking-com.p.rapidapi.com/v1/hotels

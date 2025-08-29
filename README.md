@@ -1,30 +1,49 @@
 # Trip Planner
 
-A comprehensive travel planning application that helps users plan their trips by searching for flights, hotels, and managing their travel itineraries. The application integrates with multiple external APIs to provide real-time data on flights, accommodations, and currency exchange rates.
+A comprehensive travel planning application built with a microservices architecture that helps users plan their trips by searching for flights, hotels, and managing their travel itineraries. The application integrates with multiple external APIs to provide real-time data on flights, accommodations, and currency exchange rates.
 
-Frontend repository: https://github.com/bpmcircuits/trip-planner-front
+## Architecture Overview
+
+Trip Planner is built using a microservices architecture with the following components:
+
+### Infrastructure Services
+
+- **Config Service**: Centralized configuration server using Spring Cloud Config
+- **Discovery Service**: Service registry and discovery using Netflix Eureka
+- **Gateway Service**: API Gateway using Spring Cloud Gateway for routing and load balancing
+
+### Domain Services
+
+- **Flight API Service**: Manages flight search and offers using the Amadeus API
+- **Hotel API Service**: Manages hotel search and offers using the Booking.com API via RapidAPI
+- **Trip API Service**: Manages trip entities that combine flights and hotels
+- **User API Service**: Handles user registration, authentication, and profile management
+- **NBP API Service**: Provides currency exchange rates from the National Bank of Poland API
+
+### Frontend
+
+- **Frontend Service**: Web interface for users to interact with the application
+
+### Database
+
+- **PostgreSQL**: Relational database with separate schemas for each service
 
 ## Technologies Used
 
-- Java 21
-- Spring Boot 3.5.4
-- Spring Data JPA
-- Spring Security
-- MySQL (production)
-- H2 Database (development/testing)
-- Lombok
-- dotenv-java (for environment variable management)
+- **Java 21**
+- **Spring Boot 3.5.4**
+- **Spring Cloud**
+  - Spring Cloud Config
+  - Spring Cloud Netflix Eureka
+  - Spring Cloud Gateway
+- **Spring Data JPA**
+- **Spring Security**
+- **PostgreSQL**
+- **Docker & Docker Compose**
+- **Gradle**
+- **Lombok**
 
-## Features
-
-- **Flight Search**: Search for flights between destinations with filters for dates, passengers, and more
-- **Hotel Search**: Find accommodations at your destination with various filtering options
-- **Trip Management**: Create and manage complete trip itineraries
-- **Currency Exchange**: Get real-time currency exchange rates for travel budgeting
-- **User Management**: User registration and authentication system
-- **Traveler Management**: Add and manage travelers for your trips
-
-## API Integrations
+## External API Integrations
 
 The application integrates with the following external APIs:
 
@@ -48,14 +67,36 @@ Used for currency exchange rates. Provides:
 
 Endpoint: https://api.nbp.pl/api
 
+## Features
+
+- **Flight Search**: Search for flights between destinations with filters for dates, passengers, and more
+- **Hotel Search**: Find accommodations at your destination with various filtering options
+- **Trip Management**: Create and manage complete trip itineraries
+- **Currency Exchange**: Get real-time currency exchange rates for travel budgeting
+- **User Management**: User registration and authentication system
+- **Traveler Management**: Add and manage travelers for your trips
+
 ## Setup Instructions
 
 ### Prerequisites
-- Java 21 or higher
-- MySQL (for production)
-- Gradle
+- Docker and Docker Compose
+- Java 21 or higher (for development)
+- Gradle (for development)
 
-### Installation
+### Environment Variables
+
+Create a `.env` file in the project root with the following variables:
+
+```
+AMADEUS_API_KEY=your_amadeus_api_key
+AMADEUS_CLIENT_ID=your_amadeus_client_id
+AMADEUS_CLIENT_SECRET=your_amadeus_client_secret
+BOOKING_API_KEY=your_booking_api_key
+MAILTRAP_USERNAME=your_mailtrap_username
+MAILTRAP_PASSWORD=your_mailtrap_password
+```
+
+### Running with Docker Compose
 
 1. Clone the repository
 ```
@@ -63,51 +104,54 @@ git clone https://github.com/yourusername/trip-planner.git
 cd trip-planner
 ```
 
-2. Create a `.env` file in the project root with the following variables:
+2. Start the application using Docker Compose
 ```
-KIWI_API_KEY=your_kiwi_api_key
-BOOKING_API_KEY=your_booking_api_key
-AMADEUS_API_KEY=your_amadeus_api_key
-AMADEUS_CLIENT_ID=your_amadeus_client_id
-AMADEUS_CLIENT_SECRET=your_amadeus_client_secret
+docker-compose up -d
 ```
 
-3. Configure the database connection in `application.properties`
+3. The application will be available at:
+   - Frontend: http://localhost:3001
+   - API Gateway: http://localhost:8080
+   - Eureka Dashboard: http://localhost:8761
 
-By default, the application is configured to use MySQL with the following settings:
+### Development Setup
+
+1. Clone the repository
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/trip_planner?serverTimezone=Europe/Warsaw&useSSL=False&allowPublicKeyRetrieval=true
-spring.datasource.username=trip_planner_user
-spring.datasource.password=trip_planner_pass
+git clone https://github.com/yourusername/trip-planner.git
+cd trip-planner
 ```
 
-You may need to create the database and user with appropriate permissions before running the application.
-
-4. Build the project
+2. Build the project
 ```
 ./gradlew build
 ```
 
-5. Run the application
+3. Run individual services (example for flight-api-service)
 ```
-./gradlew bootRun
+cd flight-api-service
+../gradlew bootRun
 ```
-
-The application will start on port 8083 by default. You can access it at http://localhost:8083
 
 ## API Endpoints
 
-The application exposes the following REST API endpoints:
+The application exposes the following REST API endpoints through the API Gateway:
 
 ### Flights
 
-- `GET /api/v1/flights/search` - Search for flights
-  - Parameters: origin, destination, departureDate, returnDate, adults, children, infants, currencyCode
+- `POST /api/v1/flights/flight-offer` - Search for flights
+  - Request body: origin, destination, departureDate, returnDate, adults, children, infants, currencyCode
+- `GET /api/v1/flights` - Get all flights
+- `GET /api/v1/flights/{id}` - Get flight by ID
+- `DELETE /api/v1/flights/{id}` - Delete a flight
 
 ### Hotels
 
-- `GET /api/v1/hotels/search` - Search for hotels
-  - Parameters: location, checkinDate, checkoutDate, adults
+- `POST /api/v1/hotels/hotel-offer` - Search for hotels
+  - Request body: query, checkinDate, checkoutDate, adults
+- `GET /api/v1/hotels` - Get all hotels
+- `GET /api/v1/hotels/{id}` - Get hotel by ID
+- `DELETE /api/v1/hotels/{id}` - Delete a hotel
 
 ### Trips
 
@@ -116,14 +160,7 @@ The application exposes the following REST API endpoints:
 - `POST /api/v1/trips` - Create a new trip
 - `PUT /api/v1/trips/{id}/flight` - Update trip flight details
 - `PUT /api/v1/trips/{id}/hotel` - Update trip hotel details
-- `POST /api/v1/trips/{id}/book` - Book a trip
 - `DELETE /api/v1/trips/{id}` - Delete a trip
-
-### Travelers
-
-- `GET /api/v1/trips/travelers` - Get all travelers
-- `POST /api/v1/trips/travelers/add` - Add a new traveler
-- `DELETE /api/v1/trips/travelers/{travelerId}` - Remove a traveler
 
 ### Currency
 
@@ -134,13 +171,29 @@ The application exposes the following REST API endpoints:
 ### Searching for Flights
 
 ```
-GET /api/v1/flights/search?origin=WAW&destination=LHR&departureDate=2025-09-01&returnDate=2025-09-10&adults=2
+POST /api/v1/flights/flight-offer
+{
+  "origin": "WAW",
+  "destination": "LHR",
+  "departureDate": "2025-09-01",
+  "returnDate": "2025-09-10",
+  "adults": 2,
+  "children": 0,
+  "infants": 0,
+  "currencyCode": "PLN"
+}
 ```
 
 ### Searching for Hotels
 
 ```
-GET /api/v1/hotels/search?location=London&checkinDate=2025-09-01&checkoutDate=2025-09-10&adults=2
+POST /api/v1/hotels/hotel-offer
+{
+  "query": "London",
+  "checkinDate": "2025-09-01",
+  "checkoutDate": "2025-09-10",
+  "adults": 2
+}
 ```
 
 ### Creating a Trip
@@ -155,30 +208,18 @@ POST /api/v1/trips
 }
 ```
 
-### Adding a Traveler
+## Service Communication
 
-```
-POST /api/v1/trips/travelers/add
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john.doe@example.com",
-  "phoneNumber": "+1234567890"
-}
-```
+Services communicate with each other through:
+1. **Service Discovery**: Using Netflix Eureka for service registration and discovery
+2. **REST API Calls**: Services call each other's REST APIs when needed
+3. **API Gateway**: External clients access the services through the API Gateway
 
-## Configuration
+## Monitoring and Health Checks
 
-The application uses Spring profiles for different environments:
-
-- `dev`: Development environment with H2 database
-- `prod`: Production environment with MySQL database
-
-You can specify the active profile by setting the `spring.profiles.active` property in `application.properties` or as a command-line argument:
-
-```
-./gradlew bootRun --args='--spring.profiles.active=dev'
-```
+Each service exposes health endpoints through Spring Boot Actuator:
+- `/actuator/health` - Health status of the service
+- `/actuator/info` - Information about the service
 
 ## License
 

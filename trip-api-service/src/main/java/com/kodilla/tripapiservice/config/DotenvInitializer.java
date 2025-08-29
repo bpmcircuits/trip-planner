@@ -1,4 +1,4 @@
-package com.kodilla.flightapiservice.config;
+package com.kodilla.tripapiservice.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.ApplicationContextInitializer;

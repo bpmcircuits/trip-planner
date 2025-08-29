@@ -1,10 +1,10 @@
-package com.kodilla.tripplannerhotelapi.rapidapi.client;
+package com.kodilla.hotelapiservice.rapidapi.client;
 
-import com.kodilla.tripplannerhotelapi.rapidapi.config.BookingHotelsConfig;
-import com.kodilla.tripplannerhotelapi.rapidapi.dto.BookingHotelsDestinationApiDTO;
-import com.kodilla.tripplannerhotelapi.rapidapi.dto.BookingHotelsDestinationResponseApiDTO;
-import com.kodilla.tripplannerhotelapi.rapidapi.dto.BookingHotelsRequestDTO;
-import com.kodilla.tripplannerhotelapi.rapidapi.dto.BookingHotelsSearchResponseApiDTO;
+import com.kodilla.hotelapiservice.rapidapi.config.BookingHotelsConfig;
+import com.kodilla.hotelapiservice.rapidapi.dto.BookingHotelsDestinationApiDTO;
+import com.kodilla.hotelapiservice.rapidapi.dto.BookingHotelsDestinationResponseApiDTO;
+import com.kodilla.hotelapiservice.rapidapi.dto.BookingHotelsRequestDTO;
+import com.kodilla.hotelapiservice.rapidapi.dto.BookingHotelsSearchResponseApiDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,8 @@ public class BookingHotelsClient {
         return response.getBody();
     }
 
-    public BookingHotelsSearchResponseApiDTO getHotelResults(BookingHotelsDestinationApiDTO bookingHotelsDestinationApiDTO, BookingHotelsRequestDTO request) {
+    public BookingHotelsSearchResponseApiDTO getHotelResults(
+            BookingHotelsDestinationApiDTO bookingHotelsDestinationApiDTO, BookingHotelsRequestDTO request) {
         URI uri = UriComponentsBuilder.fromUriString(config.getBookingHotelsApiEndpoint() + "/search")
                 .queryParam("locationId", bookingHotelsDestinationApiDTO.destId())
                 .queryParam("checkinDate", request.checkinDate())

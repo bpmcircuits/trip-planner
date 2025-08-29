@@ -1,8 +1,7 @@
-package com.kodilla.tripplanner.amadeus.client;
+package com.kodilla.flightapiservice.amadeus.client;
 
-import com.kodilla.tripplanner.amadeus.dto.AmadeusTokenResponse;
-import com.kodilla.tripplanner.amadeus.properties.AmadeusProperties;
-import lombok.RequiredArgsConstructor;
+import com.kodilla.flightapiservice.amadeus.dto.AmadeusTokenResponse;
+import com.kodilla.flightapiservice.amadeus.properties.AmadeusProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

@@ -1,7 +1,7 @@
-package com.kodilla.tripplanner.repository;
+package com.kodilla.tripapiservice.repository;
 
-import com.kodilla.tripplanner.domain.Trip;
-import org.springframework.data.repository.CrudRepository;
+import com.kodilla.tripapiservice.domain.Trip;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TripRepository extends CrudRepository<Trip, Long> {
+public interface TripRepository extends JpaRepository<Trip, Long> {
 }

@@ -1,7 +1,7 @@
-package com.kodilla.tripplanner.mapper;
+package com.kodilla.tripapiservice.mapper;
 
-import com.kodilla.tripplanner.domain.Traveler;
-import com.kodilla.tripplanner.dto.TravelerDTO;
+import com.kodilla.tripapiservice.domain.Traveler;
+import com.kodilla.tripapiservice.dto.TravelerDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

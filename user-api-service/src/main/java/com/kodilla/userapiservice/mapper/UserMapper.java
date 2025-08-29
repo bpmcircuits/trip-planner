@@ -1,8 +1,8 @@
-package com.kodilla.tripplanner.mapper;
+package com.kodilla.userapiservice.mapper;
 
-import com.kodilla.tripplanner.domain.User;
-import com.kodilla.tripplanner.dto.UserDTO;
-import com.kodilla.tripplanner.dto.UserFormDTO;
+import com.kodilla.userapiservice.domain.User;
+import com.kodilla.userapiservice.dto.UserDTO;
+import com.kodilla.userapiservice.dto.UserFormDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

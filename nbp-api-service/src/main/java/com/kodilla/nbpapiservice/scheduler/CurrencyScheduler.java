@@ -1,6 +1,6 @@
-package com.kodilla.tripplanner.scheduler;
+package com.kodilla.nbpapiservice.scheduler;
 
-import com.kodilla.tripplanner.service.CurrencyService;
+import com.kodilla.nbpapiservice.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

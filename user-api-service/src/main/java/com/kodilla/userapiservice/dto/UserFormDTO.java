@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.dto;
+package com.kodilla.userapiservice.dto;
 
 public record UserFormDTO(
         String login,

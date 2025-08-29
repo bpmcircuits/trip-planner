@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.config;
+package com.kodilla.userapiservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

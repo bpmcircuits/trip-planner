@@ -1,6 +1,6 @@
-package com.kodilla.tripplanner.dto;
+package com.kodilla.userapiservice.dto;
 
-import com.kodilla.tripplanner.domain.AccountType;
+import com.kodilla.userapiservice.domain.AccountType;
 
 import java.time.LocalDateTime;
 

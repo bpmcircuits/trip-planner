@@ -1,8 +1,8 @@
-package com.kodilla.tripplannerhotelapi.rapidapi.mapper;
+package com.kodilla.hotelapiservice.rapidapi.mapper;
 
-import com.kodilla.tripplannerhotelapi.rapidapi.dto.BookingHotelsApiDTO;
-import com.kodilla.tripplannerhotelapi.rapidapi.dto.BookingHotelsResponseDTO;
-import com.kodilla.tripplannerhotelapi.rapidapi.dto.BookingHotelsSearchResponseApiDTO;
+import com.kodilla.hotelapiservice.rapidapi.dto.BookingHotelsApiDTO;
+import com.kodilla.hotelapiservice.rapidapi.dto.BookingHotelsResponseDTO;
+import com.kodilla.hotelapiservice.rapidapi.dto.BookingHotelsSearchResponseApiDTO;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

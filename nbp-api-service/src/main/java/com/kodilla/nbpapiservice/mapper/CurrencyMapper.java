@@ -1,8 +1,8 @@
-package com.kodilla.tripplanner.mapper;
+package com.kodilla.nbpapiservice.mapper;
 
-import com.kodilla.tripplanner.domain.Currency;
-import com.kodilla.tripplanner.nbp.dto.NBPRateDTO;
-import com.kodilla.tripplanner.nbp.dto.NBPTableDTO;
+import com.kodilla.nbpapiservice.domain.Currency;
+import com.kodilla.nbpapiservice.dto.NBPRateDTO;
+import com.kodilla.nbpapiservice.dto.NBPTableDTO;
 import org.springframework.stereotype.Service;
 
 @Service

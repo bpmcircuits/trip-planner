@@ -1,9 +1,12 @@
-package com.kodilla.tripplanner.controller;
+package com.kodilla.tripapiservice.controller;
 
-import com.kodilla.tripplanner.domain.Traveler;
-import com.kodilla.tripplanner.dto.TravelerDTO;
-import com.kodilla.tripplanner.mapper.TravelerMapper;
-import com.kodilla.tripplanner.service.TripService;
+import com.kodilla.tripapiservice.domain.Trip;
+import com.kodilla.tripapiservice.dto.TripDTO;
+import com.kodilla.tripapiservice.exception.FlightNotFoundException;
+import com.kodilla.tripapiservice.exception.HotelNotFoundException;
+import com.kodilla.tripapiservice.exception.TripNotFoundException;
+import com.kodilla.tripapiservice.mapper.TripMapper;
+import com.kodilla.tripapiservice.service.TripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,60 +19,46 @@ import java.util.List;
 public class TripController {
 
     private final TripService tripService;
-    private final TravelerMapper travelerMapper;
+    private final TripMapper tripMapper;
 
     @GetMapping
-    public String getAllTrips() {
-        return "List of all trips";
+    public ResponseEntity<List<TripDTO>> getAllTrips() {
+        List<TripDTO> trips = tripMapper.toTripDTOList(tripService.findAll());
+        return ResponseEntity.ok(trips);
     }
 
     @GetMapping("/{id}")
-    public String getTripById(@PathVariable String id) {
-        return "Details for trip ID: " + id;
+    public ResponseEntity<TripDTO> getTripById(@PathVariable Long id) throws TripNotFoundException {
+        Trip trip = tripService.findById(id);
+        TripDTO tripDTO = tripMapper.toTripDTO(trip);
+        return ResponseEntity.ok(tripDTO);
     }
 
     @PostMapping
-    public String createTrip(String tripDetails) {
-        return "Trip created with details: " + tripDetails;
+    public ResponseEntity<TripDTO> createTrip(@RequestBody TripDTO tripDTO) {
+        Trip trip = tripMapper.toTrip(tripDTO, null);
+        Trip savedTrip = tripService.save(trip);
+        return ResponseEntity.ok(tripMapper.toTripDTO(savedTrip));
     }
 
     @PutMapping("/{id}/flight")
-    public String updateTripFlight(@PathVariable String id, @RequestBody String flightDetails) {
-        return "Trip " + id + " flight updated with details: " + flightDetails;
+    public ResponseEntity<TripDTO> updateTripFlight(@PathVariable Long id, @RequestBody Long flightId) 
+            throws TripNotFoundException, FlightNotFoundException {
+        Trip updatedTrip = tripService.updateTripFlight(id, flightId);
+        return ResponseEntity.ok(tripMapper.toTripDTO(updatedTrip));
     }
 
     @PutMapping("/{id}/hotel")
-    public String updateTripHotel(@PathVariable String id, @RequestBody String hotelDetails) {
-        return "Trip " + id + " hotel updated with details: " + hotelDetails;
-    }
-
-    @GetMapping("/travelers")
-    public ResponseEntity<List<TravelerDTO>> getAllTravelers() {
-        List<Traveler> travelers = tripService.getAllTravelers();
-        return ResponseEntity.ok(travelerMapper.toTravelerDTOList(travelers));
-    }
-
-    @PostMapping("/travelers/add")
-    public ResponseEntity<TravelerDTO> addTraveler(@RequestBody TravelerDTO travelerDTO) {
-        Traveler traveler = travelerMapper.toTraveler(travelerDTO);
-        Traveler addedTraveler = tripService.addTraveler(traveler);
-        return ResponseEntity.ok(travelerMapper.toTravelerDTO(addedTraveler));
-    }
-
-    @DeleteMapping("/travelers/{travelerId}")
-    public ResponseEntity<Void> removeTraveler(@PathVariable Long travelerId) {
-        tripService.removeTraveler(travelerId);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/{id}/book")
-    public String bookTrip(@PathVariable String id) {
-        return "Trip booked with id: " + id;
+    public ResponseEntity<TripDTO> updateTripHotel(@PathVariable Long id, @RequestBody Long hotelId) 
+            throws TripNotFoundException, HotelNotFoundException {
+        Trip updatedTrip = tripService.updateTripHotel(id, hotelId);
+        return ResponseEntity.ok(tripMapper.toTripDTO(updatedTrip));
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTrip(@PathVariable String id) {
-        return "Trip deleted with ID: " + id;
+    public ResponseEntity<Void> deleteTrip(@PathVariable Long id) throws TripNotFoundException {
+        tripService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

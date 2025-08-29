@@ -1,4 +1,4 @@
-package com.kodilla.tripplannerhotelapi.rapidapi.dto;
+package com.kodilla.hotelapiservice.rapidapi.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

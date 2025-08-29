@@ -1,0 +1,249 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: tp_admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: postgres
+    ports:
+      - "5555:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U tp_admin -d postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  config-service:
+    build: ./config-service
+    container_name: config-service
+    restart: always
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_PROFILES_ACTIVE=native
+      - CONFIG_REPO_PATH=/config-repo
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery-service:8761/eureka
+    volumes:
+      - ./config-repo:/config-repo:ro
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8081/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  discovery-service:
+    build: ./discovery-service
+    container_name: discovery-service
+    environment:
+      - SERVER_PORT=8761
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8081
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+    ports:
+      - "8761:8761"
+    depends_on:
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8761/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  gateway-service:
+    build: ./gateway-service
+    container_name: gateway-service
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8081
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery-service:8761/eureka
+    ports:
+      - "8080:8080"
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  flight-api-service:
+    build: ./flight-api-service
+    restart: always
+    environment:
+      - SERVER_PORT=8083
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8081
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flight_db?currentSchema=trip_planner
+      - AMADEUS_API_KEY=${AMADEUS_API_KEY}
+      - AMADEUS_CLIENT_SECRET=${AMADEUS_CLIENT_SECRET}
+      - AMADEUS_CLIENT_ID=${AMADEUS_CLIENT_ID}
+      - AMADEUS_TOKEN_URL=https://test.api.amadeus.com/v1/security/oauth2/token
+    ports:
+      - "8083:8083"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8083/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  hotel-api-service:
+    build: ./hotel-api-service
+    restart: always
+    environment:
+      - SERVER_PORT=8084
+      - SPRING_APPLICATION_NAME=hotel-api-service
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8081
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/hotel_db?currentSchema=trip_planner
+      - BOOKING_API_KEY=${BOOKING_API_KEY}
+    ports:
+      - "8084:8084"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8084/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  nbp-api-service:
+    build: ./nbp-api-service
+    restart: always
+    environment:
+      - SERVER_PORT=8085
+      - SPRING_APPLICATION_NAME=nbp-api-service
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8081
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/currency_db?currentSchema=trip_planner
+    ports:
+      - "8085:8085"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8085/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  trip-api-service:
+    build: ./trip-api-service
+    restart: always
+    environment:
+      - SPRING_APPLICATION_NAME=trip-api-service
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8081
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/trip_db?currentSchema=trip_planner
+    depends_on:
+      postgres:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  user-api-service:
+    build: ./user-api-service
+    restart: always
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8081
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/user_db?currentSchema=trip_planner
+      - MAILTRAP_USERNAME=${MAILTRAP_USERNAME}
+      - MAILTRAP_PASSWORD=${MAILTRAP_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+  frontend:
+    build: ./frontend
+    restart: always
+    environment:
+      - BACKEND_API_BASE_URL=http://gateway-service:8080/api/v1
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'" ]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - backend
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
+    driver: bridge

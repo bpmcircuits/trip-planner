@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: flight-api-service
+  config:
+    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://localhost:8081}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/flight_db?currentSchema=trip_planner}
+    username: tp_admin
+    password: admin123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: trip_planner
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+
+
+amadeus:
+  api:
+    key: ${AMADEUS_API_KEY}
+    endpoint:
+      prod: https://test.api.amadeus.com
+  client:
+    secret: ${AMADEUS_CLIENT_SECRET}
+    id: ${AMADEUS_CLIENT_ID}
+  token:
+    url: ${AMADEUS_TOKEN_URL:https://test.api.amadeus.com/v1/security/oauth2/token}
+  refresh:
+    token:
+      seconds: '1700'

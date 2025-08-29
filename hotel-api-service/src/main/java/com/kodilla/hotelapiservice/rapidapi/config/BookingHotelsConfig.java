@@ -1,4 +1,4 @@
-package com.kodilla.tripplannerhotelapi.rapidapi.config;
+package com.kodilla.hotelapiservice.rapidapi.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

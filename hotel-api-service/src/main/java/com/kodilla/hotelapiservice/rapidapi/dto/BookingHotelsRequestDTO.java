@@ -1,4 +1,4 @@
-package com.kodilla.tripplannerhotelapi.rapidapi.dto;
+package com.kodilla.hotelapiservice.rapidapi.dto;
 
 
 public record BookingHotelsRequestDTO(

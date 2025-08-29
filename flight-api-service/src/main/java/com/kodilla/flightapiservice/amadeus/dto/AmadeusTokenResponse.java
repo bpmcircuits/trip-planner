@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.amadeus.dto;
+package com.kodilla.flightapiservice.amadeus.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.domain;
+package com.kodilla.userapiservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -55,4 +55,13 @@ public class User {
     @Setter
     @Column(name = "token_expires_at", nullable = false)
     private LocalDateTime tokenExpiresAt;
+
+    @Setter
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Setter
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status")
+    private UserStatus userStatus;
 }

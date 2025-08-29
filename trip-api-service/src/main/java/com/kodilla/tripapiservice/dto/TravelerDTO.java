@@ -1,8 +1,9 @@
-package com.kodilla.tripplanner.dto;
+package com.kodilla.tripapiservice.dto;
 
-import com.kodilla.tripplanner.domain.BaggageType;
-import com.kodilla.tripplanner.domain.Gender;
-import com.kodilla.tripplanner.domain.PersonType;
+
+import com.kodilla.tripapiservice.domain.BaggageType;
+import com.kodilla.tripapiservice.domain.Gender;
+import com.kodilla.tripapiservice.domain.PersonType;
 
 public record TravelerDTO(Long id,
                           String firstName,

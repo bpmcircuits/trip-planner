@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.dto.flights;
+package com.kodilla.flightapiservice.dto;
 
 import java.util.List;
 

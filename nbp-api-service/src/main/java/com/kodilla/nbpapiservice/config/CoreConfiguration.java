@@ -1,4 +1,4 @@
-package com.kodilla.hotelapiservice.config;
+package com.kodilla.nbpapiservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

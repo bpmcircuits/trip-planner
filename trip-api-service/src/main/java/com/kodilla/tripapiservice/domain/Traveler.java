@@ -1,12 +1,10 @@
-package com.kodilla.tripplanner.domain;
+package com.kodilla.tripapiservice.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Builder

@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.amadeus.properties;
+package com.kodilla.flightapiservice.amadeus.properties;
 
 import lombok.Getter;
 import lombok.Setter;

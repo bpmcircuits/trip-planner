@@ -1,7 +1,7 @@
-package com.kodilla.tripplanner.nbp.client;
+package com.kodilla.nbpapiservice.client;
 
-import com.kodilla.tripplanner.nbp.dto.NBPTableDTO;
-import com.kodilla.tripplanner.nbp.config.NBPConfig;
+import com.kodilla.nbpapiservice.config.NBPConfig;
+import com.kodilla.nbpapiservice.dto.NBPTableDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

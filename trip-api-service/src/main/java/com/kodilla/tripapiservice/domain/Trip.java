@@ -1,4 +1,4 @@
-package com.kodilla.tripplanner.domain;
+package com.kodilla.tripapiservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,13 +29,11 @@ public class Trip {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "flight_id")
-    private Flight flight;
+    @Column(name = "flight_id")
+    private Long flightId;
 
-    @OneToOne
-    @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
+    @Column(name = "hotel_id")
+    private Long hotelId;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<Traveler> travelers;

@@ -1,11 +1,7 @@
-package com.kodilla.tripplanner.repository;
+package com.kodilla.tripapiservice.repository;
 
-import com.kodilla.tripplanner.domain.Traveler;
-import org.springframework.data.repository.CrudRepository;
+import com.kodilla.tripapiservice.domain.Traveler;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface TravelerRepository extends CrudRepository<Traveler, Long> {
-
-    List<Traveler> findAll();
+public interface TravelerRepository extends JpaRepository<Traveler, Long> {
 }

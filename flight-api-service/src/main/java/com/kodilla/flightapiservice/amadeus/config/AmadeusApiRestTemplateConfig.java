@@ -1,8 +1,8 @@
-package com.kodilla.tripplanner.amadeus.config;
+package com.kodilla.flightapiservice.amadeus.config;
 
-import com.kodilla.tripplanner.amadeus.client.AmadeusTokenManager;
+
+import com.kodilla.flightapiservice.amadeus.client.AmadeusTokenManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

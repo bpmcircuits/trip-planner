@@ -1,7 +1,7 @@
-package com.kodilla.tripplanner.amadeus.client;
+package com.kodilla.flightapiservice.amadeus.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.kodilla.tripplanner.amadeus.dto.AmadeusFlightsFlightOfferDTO;
+import com.kodilla.flightapiservice.amadeus.dto.AmadeusFlightsFlightOfferDTO;
 
 import java.util.List;
 
