@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/bpmcircuits/trip-planner.svg?style=svg)](https://app.circleci.com/pipelines/github/bpmcircuits/trip-planner?branch=main)
+ [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 # Trip Planner
 
 A comprehensive travel planning application built with a microservices architecture that helps users plan their trips by searching for flights, hotels, and managing their travel itineraries. The application integrates with multiple external APIs to provide real-time data on flights, accommodations, and currency exchange rates.
