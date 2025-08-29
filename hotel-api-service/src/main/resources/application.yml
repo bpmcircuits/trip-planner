@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: hotel-api-service
+
+  config:
+    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://localhost:8081}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/hotel_db?currentSchema=trip_planner}
+    password: admin123
+    username: tp_admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+    properties:
+      hibernate:
+        format_sql: 'true'
+        default_schema: trip_planner
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka}
+
+booking:
+  api:
+    key: ${BOOKING_API_KEY}
+  hotels:
+    api:
+      endpoint:
+        prod: https://booking-com18.p.rapidapi.com/stays
+
+hotel:
+  cleanup:
+    cron: 0 0 0 * * ?
+    days: '30'
+    enabled: 'true'

@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: config-service
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://discovery-service:8761/eureka}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:./config-repo/
+
+---
+spring:
+  config:
+    activate:
+      on-profile: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:/config-repo/

@@ -1,0 +1,36 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: 'true'
+    defer-datasource-initialization: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+  config:
+    import: ''
+  cloud:
+    config:
+      import-check:
+        enabled: 'false'
+      enabled: 'false'
+  datasource:
+    password: sa
+    driver-class-name: org.h2.Driver
+    username: sa
+    url: jdbc:h2:mem:nbp;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+  sql:
+    init:
+      mode: always
+  task:
+    scheduling:
+      enabled: 'false'
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8082/eureka
+nbp:
+  api:
+    endpoint:
+      prod: https://api.nbp.pl/api

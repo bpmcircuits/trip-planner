@@ -1,0 +1,14 @@
+vaadin:
+  launch-browser: 'true'
+
+spring:
+  application:
+    name: frontend
+
+server:
+  port: 3001
+
+backend:
+  api:
+    endpoint:
+      test: ${BACKEND_API_BASE_URL:http://localhost:8080/api/v1}

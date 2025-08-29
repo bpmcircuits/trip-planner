@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: trip-api-service
+
+server:
+  port: 8086
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
